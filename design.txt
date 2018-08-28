@@ -1,0 +1,58 @@
+rooms:
+
+1: vidya arcade
+2: casino
+3: 40k disco
+4: homestuck throne room
+5: turtle lobby
+6: turtle graveyard
+7: laboratory
+8: pokemon arena
+9: weeb corner
+
+weapons:
+		power
+knife		1
+sword-scissor	2
+zillyhoo	2
+chainsword	2
+money-machete	2
+tranq-gun	3 (non-lethal)
+bolt-pistol	3 (loud)
+cash-cannon	3 (loud)
+pokeball	special (non-lethal)
+death-note	special
+fluorite-octet  special
+
+
+other items:
+
+codex-astartes
+nendoroid
+sburb-beta
+dnd-dice
+cheatcode	
+red badge
+green sburb pin
+white pearl
+blue space marine miniature
+black crystal
+
+anime stuff:
+anime-pin	35%
+anime-poster	25%
+anime-tshirt	15%
+anime-pillow	12%
+anime-bluray	8%
+anime-figure	5%
+
+
+8s table:
+
+0	34.4%
+1	39.3%
+2	19.6%
+3	 5.6%
+4	 1.0%
+5	 0.1%
+6,7,8   <0.1%

@@ -1,0 +1,136 @@
+{
+"players":[],
+"playing": false,
+"descriptions":{
+	"lobby": "The lobby is filled with all sorts of turtle-related merchandise. Statues of varying sizes, plushies, portraits, anything you can imagine.\nThis room connects to the disco, the laboratory, the arena and the graveyard.",
+	"throne-room": "Colourful light enters through the stained-glass windows and illuminates this bleak, rundown room. An altar sits at the bottom of a set of stairs leading up to the throne that dominates the room. Atop the throne sits the withered husk of Andrew Hussie, artificially kept alive by consuming the souls of a thousand Homestuck fans every day. It is rumoured that he can serve as a powerful oracle, for the right price.\nThis room connects to the laboratory.",
+	"arena": "An empty collosseum-style room, that beckons you to test your mettle as a pokemon trainer against your fellow players.\nThis room connects to the lobby, weeb-corner and the graveyard.",
+	"laboratory": "Lining the walls of the lab are cabinets full of science equipment. One of the cabinets in a corner is locked. On a table in the center there is a strange setup involving a pentagram with five sockets illuminated in the colours red, green, white, blue and black respectively.\nThis room connects to the lobby, the throne-room and the weeb-corner.",
+	"weeb-corner": "A room full of anime merchandise in massive, utterly disorganized piles. If you were to dig through these, you might be able to find some pretty valuable stuff. In the corner sits a filthy otaku watching Eva for the 57th time. This room makes you sick.\nThis room connects to the laboratory and the arena.",
+	"disco": "Strobe lights illuminate the dance floor while dubstep blasts from the speakers. It's extremely loud. In the center of the dancefloor stands a hulking space marine, perfectly still, as though he were a statue.\nThis room connects to the lobby and the casino.",
+	"arcade": "This dark room, decorated with neon lights, is full of arcade machines boasting all the hottest new games from 30 years ago.\nThis room connects to the casino.",
+	"casino": "A classy casino for savvy players to win big and for suckers to lose everything. You can play a dice game and exchange coins for prizes.\nThis room connects to the disco, the arcade and the graveyard.",
+	"graveyard": "The thick fog covering the floor gives this room an ethereal atmosphere. There are turtle skeletons of various sizes littered throughout the room, all of which are dwarfed by a single giant turtle skull. In front of the skull there is a plaque, which reads: 'Pray for the dead.'\nThis room connects to the lobby, the arena and the casino.",
+	"dead": "The realm of the dead. There is nothing here.",
+	"trial-grounds": "A circular room, allowing you to cast blame in every direction.",
+
+	"fists": "Just your trusty fool-punchers. Level 0 Weapon.",
+	"knife": "A simple knife. Good for stabbing and cutting. Level 1 Weapon.",
+	"scissor-blade": "Don't lose your way! Level 2 Weapon.",
+	"warhammer-of-zillyhoo": "There she is. Forged in fire by the smiths of Pipplemop, commissioned by the sage Lord of the Wozzinjay Fiefdom in the Realm of the Snargly Fruzmigbubbins, The Warhammer Of Zillyhoo. Level 2 Weapon.",
+	"chainsword": "A vicious weapon from a grimdark universe. Level 2 Weapon.",
+	"money-machete": "A blade forged from hardened dollar bills. Level 2 Weapon.",
+	"tranquilizer-gun": "Air gun that fires a dart laced with a knockout drug, that lasts for two minutes. Level 3 Weapon (non-lethal).",
+	"bolt-pistol": "Side-arm wielded by the Emperor's faithful servants. Very loud when fired. Level 3 Weapon.",
+	"cash-cannon": "Shoots coins rather than bullets. Very loud when fired. Level 3 Weapon.",
+	"death-note": "Can kill any player from anywhere as long as you know their true name. If only you had something to write with...",
+	"fluorite-octet": "A legendary set of 8 8-sided dice. Power level equal to the number of 8s you roll.",
+	"pokeball": "Gotta catch 'em all!",
+
+	"codex-astartes": "An invaluable strategic asset in any large-scale conflict.",
+	"nendoroid": "A cute little figure of your favorite anime character.",
+	"sburb-beta": "Beta version of the revolutionary, immersive upcoming video game SBURB.",
+	"key": "An ordinary key.",
+	"dnd-dice": "Contains all the dice you need for a session of DnD.",
+	"cheatcode": "Rumored to unlock exclusive new content.",
+	"badge": "Red fire badge, symbolizing the heat of the battle you had to brave to obtain it.",
+	"dollar-bill": "An esoteric currency that's printed on green paper, rather than the much more sensible alternative of using plastic casino coins.",
+	"pearl": "Its shiny, white glow gives you hope.",
+	"miniature": "A little Ultramarine, painted in the chapter-typical blue.",
+	"crystal": "Pure despair manifested into an obsidian black crystal. It makes you uneasy.",
+
+	"anime-pin": "Anime-Merchandise. Can be sold for 1 coin at the casino.",
+	"anime-poster": "Anime-Merchandise. Can be sold for 3 coins at the casino.",
+	"anime-tshirt": "Anime-Merchandise. Can be sold for 5 coins at the casino.",
+	"anime-pillow": "Anime-Merchandise. Can be sold for 10 coins at the casino.",
+	"anime-bluray": "Anime-Merchandise. Can be sold for 20 coins at the casino.",
+	"anime-figure": "Anime-Merchandise. Can be sold for 30 coins at the casino."
+	},
+"use":{
+	"codex-astartes": "You give the heavy book to the stoic yet thankful looking space marine.",
+	"nendoroid": "The otaku goes crazy with joy over the little plastic figure.",
+	"sburb-beta": "You place the beta on the stone altar. It vanishes in a flash of light.",
+	"key": "You open the locked cabinet.",
+	"dnd-dice": "You hand over the dice to the casino staff.",
+	"cheatcode": "You enter the cheat code into one of the arcade machines. The machine starts rattling and moving to the side, revealing a secret path that takes you to the weeb-corner.",
+	"badge": "You place the badge in the red socket. It starts glowing brightly.",
+	"dollar-bill": "You place the bill in the green socket. It starts glowing brightly.",
+	"pearl": "You place the pearl in the white socket. It starts glowing brightly.",
+	"miniature": "You place the miniature in the blue socket. It starts glowing brightly.",
+	"crystal": "You place the crystal in the black socket. It starts glowing brightly."
+
+	},
+"roomforobject": {
+		"codex-astartes" : "disco",
+		"nendoroid" : "weeb-corner",
+		"sburb-beta" : "throne-room",
+		"key" : "laboratory",
+		"dnd-dice" : "casino",
+		"cheatcode" : "arcade",
+		"badge" : "laboratory",
+		"dollar-bill" : "laboratory",
+		"pearl" : "laboratory",
+		"miniature" : "laboratory",
+		"crystal" : "laboratory"		
+	},
+"casinoprices": {
+	"knife": 10,
+	"scissor-blade": 20,
+	"warhammer-of-zillyhoo": 20,
+	"chainsword": 20,
+	"money-machete": 20,
+	"tranquilizer-gun": 30,
+	"bolt-pistol": 30,
+	"cash-cannon": 30,
+	"death-note": 40,
+	"fluorite-octet": 40,
+	"pokeball": 40,
+
+	"codex-astartes": 10,
+	"nendoroid": 10,
+	"sburb-beta": 10,
+	"key": 10,
+	"dnd-dice": 10,
+	"cheatcode": 20,
+	"badge": 20,
+	"dollar-bill": 100,
+	"pearl": 20,
+	"miniature": 20,
+	"crystal": 20,
+
+	"anime-pin": 2,
+	"anime-poster": 6,
+	"anime-tshirt": 10,
+	"anime-pillow": 20,
+	"anime-bluray": 40,
+	"anime-figure": 60
+
+	
+},
+
+"oracle": "Hussie offers the following services:\n'!oracle-location <@player>': For 1 coin you will learn the location of a player.\n'!oracle-weapon <@player>': For 5 coins you will learn what weapon a player currently has equipped.\n'!oracle-inventory <@player>': For 10 coins you will learn the entire inventory of a player.\n'!oracle-target <@player>': For 20 coins you will learn the target of a player.\n",
+
+"arcadegames": ["You play a virtual card game. The card backs are emblazoned with the colours red, green, white, blue and black in a pentagon.",
+		"You play an action game. Only with the power of hope can you triumph over true despair.",
+		"You play a mystery puzzle game. It seems like you have to compete against the other characters, but in truth you all have to work together to succeed.",
+		"You play a turn-based RPG. You collect badges as proof of your supremacy over the bosses you conquer.",
+		"You play a strategy game. You lead an army of angels in blue armour against the vile alien menace.",
+		"You play a 2D platformer. The final boss is a giant turtle. It's always a giant turtle. Talk about unoriginal...",
+		"You play a simulation game. You manage a city to collect as much as possible of a strange currency based on green paper."],
+
+"boss-fight": {
+	"begin": "The pentagramm, now complete, glows blindingly bright. You are sucked into a vortex of swirling colours and your surroundings disappear. When you regain your senses, the colours have disappeared and you find yourself in the bleak darkness of the graveyard together with all of the other players.\nStill disoriented you all look around, when you start sensing a malevolent aura. The room temperature seems to drop and a shiver runs down your spine. Threads of purple energy emerge from the fog and start swirling around the skeletons that are scattered throughout the room. Slowly the bones start to rise from the ground and move along with the thickening energy threads. At first their movement seems random, but gradually they all gather around the central giant turtle skull. At the same time a purple fire starts shining through the skull's eyesockets, growing from a candle-size flame until it envelops the entire skull. Yet the unholy fire does not provide any warmth; rather the temperature in the room drops even further. Finally the skull, too, starts lifting off the ground, and the swirling bones settle into place, forming the body of a giant skeletal turtle.\n\nIt's the Negaturtle. Fight! (you each have one action per round, then the Negaturtle will attack. you can either !attack or !defend yourself)",
+	"victory": "The Negaturtle staggers backwards as its skeleton body starts to crumble. The purple energy dissipates until finally the abomination collapses under its own weight. The ground quakes as the giant turtle skull hits the ground, shattering the bones beneath it and splitting in two.\nYou have vanquished the Negaturtle! You are finally free to leave this place. The souls of those who died, however, remain shackled by the Negaturtle's curse, forced to keep reincarnating and killing each other... (use !endgame to return to the lobby)",
+	"defeat": "The last of the heroes falls. Having failed to defeat the ancient evil of this place, your souls remain shackled by the Negaturtle's curse, forced to keep reincarnating and killing each other... (use !endgame to return to the lobby)"
+
+	},
+
+"glimpses": ["You find yourself in the graveyard. All ist silent, but something is different from usual. A heavy atmosphere fills the room. Something is there with you. Something ancient and malevolent, and it's drawing closer.",
+		"You find yourself in a cage. There is nothing outside the cage, only darkness stretching endlessly in every direction. You realize that the bars of your cage are actually the bones of a giant hand or claw perhaps. Just then, the bones abruptly close together, crushing you between them.",
+		"You find yourself in the graveyard. A faint purple glow is coming from the giant turtle skull. You try to look closer, when the glow suddenly erupts brightly from the skull's eyesockets, enveloping you. It's the souls of a thousand turtles howling in agony.",
+		"You find yourself in the lobby. You feel like you are being watched. The usually friendly-looking pieces of turtle merchandise all have their faces contorted into malicious grins. You hear a low-pitched cackle from all directions at once.",
+		"You find yourself looking at your own corpse on the floor. You try to remember how you died, but you can't. Instead you get the feeling that this isn't the first time. Just as the thought crystallizes, you feel your soul being sucked back into your body, and you wake up in the lobby with everyone else.",
+		"You find yourself in a maelstrom of five colours. Its blinding light pierces the veil of lies. You feel invigorated."]
+
+
+}
