@@ -1,0 +1,13 @@
+{
+  "name": "game-bot",
+  "version": "1.0.0",
+  "description": "my bot for testing shit",
+  "main": "bot.js",
+  "author": "magicksRampage",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "discord.js": "^11.3.2",
+    "edit-json-file": "^1.1.0",
+    "winston": "^3.0.0"
+  }
+}

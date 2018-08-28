@@ -1,0 +1,8 @@
+{
+"name": "game-bot",
+"version": "1.0.0",
+"description": "my bot for testing shit",
+"main": "bot.js",
+"author": "magicksRampage",
+"dependencies": {}
+}
