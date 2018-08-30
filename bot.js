@@ -752,6 +752,7 @@ bot.on('message', function (msg) {
 			
 		args = args.splice(1);
 
+
 		var activePlayer;
 		var isPlayer = checkIfPlayer(userID);
 
@@ -760,6 +761,8 @@ bot.on('message', function (msg) {
 		}
 		
 		if (rooms.has(channelID) || channelID == trialgrounds.ch || channelID == dead.ch || channelID == ko.ch || channelID == pokeball.ch) {
+
+			msg.delete();
 		switch(cmd) {
 
 			case 'goto':
@@ -1076,7 +1079,7 @@ bot.on('message', function (msg) {
 
 
 									murders.push(newMurder);
-									roomEvents.push(new RoomEvent(ch, newMurder.description(), value.id)); 
+									roomEvents.push(new RoomEvent(ch, newMurder.description(), p.id)); 
 									
 									sendMessage({
 										to: ch,
