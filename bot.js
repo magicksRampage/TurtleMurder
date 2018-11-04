@@ -728,6 +728,10 @@ bot.on("guildMemberUpdate", function(oldM, newM) {
 	}
 });
 
+bot.on('error', function (e) {
+	bot.login(auth.token);
+});
+
 //MAIN EVENT
 bot.on('message', function (msg) {
 	var userID = msg.author.id;
@@ -3166,5 +3170,6 @@ bot.on('message', function (msg) {
 			}
 	}
 });
+
 
 bot.login(auth.token);
