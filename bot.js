@@ -24,6 +24,7 @@ const trialgrounds = {ch: '471000096012500992', id: '470995797258010636'};
 const dead = {ch: '471314724794007553', id: '471314654053007382'};
 const ko = {ch: '472387558844923904', id: '472386665789521940'};
 const pokeball = {ch: '472387649563263011', id: '472386850909192212'};
+const turtlemurder = {ch: '496654579761414154', id: '470620317056761869'};
 
 const roomIDs = ['470697467550105607', '470697567542444042', '470995249557405697', '470995314694815755', '470995366716637205', '470995454822187019', '470995489014284288', '470995513349505034', '470995635957661699', trialgrounds.id, dead.id, ko.id, pokeball.id ];
 const channelIDs = ['470692760698093588', '470693771114446859', '470999759495364618', '470999797973909507', '470999834355171336', '470999874305916938', '470999912868216833', '470999989641019392', '471000051993542661'];
@@ -31,14 +32,107 @@ const channelIDs = ['470692760698093588', '470693771114446859', '470999759495364
 
 var channels = new Map(); //key = channel-name, value = channelID
 channels.set("arcade", channelIDs[0]); 
+channels.set("arc", channelIDs[0]); 
+channels.set("games", channelIDs[0]);
+ 
 channels.set("casino", channelIDs[1]); 
+channels.set("cas", channelIDs[1]); 
+channels.set("c", channelIDs[1]); 
+channels.set("gamble", channelIDs[1]); 
+
 channels.set("disco", channelIDs[2]); 
+channels.set("dis", channelIDs[2]); 
+channels.set("d", channelIDs[2]); 
+channels.set("marine", channelIDs[2]); 
+channels.set("spacemarine", channelIDs[2]); 
+channels.set("dance", channelIDs[2]); 
+
 channels.set("throne-room", channelIDs[3]); 
+channels.set("throneroom", channelIDs[3]); 
+channels.set("throne", channelIDs[3]); 
+channels.set("tr", channelIDs[3]); 
+channels.set("hussie", channelIDs[3]); 
+
 channels.set("lobby", channelIDs[4]); 
+channels.set("lob", channelIDs[4]);
+channels.set("lby", channelIDs[4]);
+channels.set("enter", channelIDs[4]); 
+channels.set("entry", channelIDs[4]); 
+
 channels.set("graveyard", channelIDs[5]); 
+channels.set("grave", channelIDs[5]); 
+channels.set("graves", channelIDs[5]); 
+channels.set("gy", channelIDs[5]); 
+channels.set("skull", channelIDs[5]); 
+
 channels.set("laboratory", channelIDs[6]); 
+channels.set("lab", channelIDs[6]); 
+channels.set("science", channelIDs[6]); 
+
 channels.set("arena", channelIDs[7]); 
+channels.set("are", channelIDs[7]); 
+channels.set("arn", channelIDs[7]); 
+channels.set("pokemon", channelIDs[7]); 
+channels.set("pokecord", channelIDs[7]); 
+
 channels.set("weeb-corner", channelIDs[8]); 
+channels.set("weebcorner", channelIDs[8]); 
+channels.set("weeb", channelIDs[8]); 
+channels.set("wc", channelIDs[8]); 
+channels.set("otaku", channelIDs[8]); 
+channels.set("anime", channelIDs[8]);
+
+var aliases = new Map(); //key = alias, value = channelName
+aliases.set("arcade", "arcade"); 
+aliases.set("arc", "arcade"); 
+aliases.set("games", "arcade");
+ 
+aliases.set("casino", "casino"); 
+aliases.set("cas", "casino"); 
+aliases.set("c", "casino"); 
+aliases.set("gamble", "casino"); 
+
+aliases.set("disco", "disco"); 
+aliases.set("dis", "disco"); 
+aliases.set("d", "disco"); 
+aliases.set("marine", "disco"); 
+aliases.set("spacemarine", "disco"); 
+aliases.set("dance", "disco"); 
+
+aliases.set("throne-room", "throne-room"); 
+aliases.set("throneroom", "throne-room"); 
+aliases.set("throne", "throne-room"); 
+aliases.set("tr", "throne-room"); 
+aliases.set("hussie", "throne-room"); 
+
+aliases.set("lobby", "lobby"); 
+aliases.set("lob", "lobby");
+aliases.set("lby", "lobby");
+aliases.set("enter", "lobby"); 
+aliases.set("entry", "lobby"); 
+
+aliases.set("graveyard", "graveyard"); 
+aliases.set("grave", "graveyard"); 
+aliases.set("graves", "graveyard"); 
+aliases.set("gy", "graveyard"); 
+aliases.set("skull", "graveyard"); 
+
+aliases.set("laboratory", "laboratory"); 
+aliases.set("lab", "laboratory"); 
+aliases.set("science", "laboratory"); 
+
+aliases.set("arena", "arena"); 
+aliases.set("are", "arena"); 
+aliases.set("arn", "arena"); 
+aliases.set("pokemon", "arena"); 
+aliases.set("pokecord", "arena"); 
+
+aliases.set("weeb-corner", "weeb-corner"); 
+aliases.set("weebcorner", "weeb-corner"); 
+aliases.set("weeb", "weeb-corner"); 
+aliases.set("wc", "weeb-corner"); 
+aliases.set("otaku", "weeb-corner"); 
+aliases.set("anime", "weeb-corner"); 
 
 
 var rooms = new Map(); //key = channelIDs, value = roleIDs
@@ -131,7 +225,7 @@ function Player(user, userID) {
 	this.dancing = false;
 	this.distracting = false;
 	this.room = roomIDs[4]; // start in lobby
-	this.cds = {mine: 0, attack: 0};
+	this.cds = {mine: 0, attack: 0, move: 0};
 
 	this.voted = false;
 	this.votes = 0;
@@ -360,27 +454,28 @@ function mainRoom(user, userID, channelID, goal, goalname) {
 		if(!checkNeighbours(currentRoom, goal)) {
 			sendMessage({
 				to: channelID,
-				message: user + ': that room is not adjacent to yours',
+				message: "**" + user + '**: that room is not adjacent to yours',
 				typing: true
 			});
 			
 			return;
 		}
+                var alias = aliases.get(goalname)
 		sendMessage({
 			to: channelID,
-			message: user + ': moving you to the ' + goalname
+			message: "**" + user + '**: moving you to the ' + alias
 		});
 
 		var originname = bot.channels.get(channelID).name;
 		var goalch = channelIDs[roomIDs.indexOf(goal)];
-		var result = user + ' enters the ' + goalname + ' from the ' + originname + '\n';
+		var result = user + ' enters the ' + alias + ' from the ' + originname + '\n';
 		welcomeEvents.push(new RoomEvent(goalch, result, userID));
 		changeRoom(currentRoom, goal, channelID, userID);
 		
 	} else {
 		sendMessage({
 			to: channelID,
-			message: user + ': youre not in the right channel for this command',
+			message: "**" + user + '**: youre not in the right channel for this command',
 			typing: true
 		});
 	}
@@ -390,6 +485,15 @@ function putEveryoneInRoom(roomCH) {
 	players.forEach(function(p) {
 		changeRoom(p.room, rooms.get(roomCH), roomCH, p.id);	
 	});	
+}
+
+function removeFromTurtleMurder() {
+	players.forEach(function(p) {
+		var guild = bot.channels.get(turtlemurder.ch).guild;
+		var member = guild.members.get(p.id);
+		member.removeRole(p.room);
+	});
+
 }
 
 
@@ -477,7 +581,7 @@ function combat(att, def, ch) {
 									}
 								});
 
-								welcomeEvents.push(new RoomEvent(ko.ch, value.name + ": you were knocked out by " + user + ".\nyou will be able to !wakeup in 2 minutes.", value.id));
+								welcomeEvents.push(new RoomEvent(ko.ch, "**" + value.name + "**: you were knocked out by " + user + ".\nyou will be able to !wakeup in 2 minutes.", value.id));
 
 								changeRoom(value.room, ko.id, ko.ch, value.id);
 
@@ -499,7 +603,7 @@ function combat(att, def, ch) {
 								if (att == def) {
 									sendMessage({
 										to: ch,
-										message: user + ": you can't catch yourself in a pokeball."
+										message: "**" + user + "**: you can't catch yourself in a pokeball."
 									});
 									return;
 								}
@@ -507,7 +611,7 @@ function combat(att, def, ch) {
 								if (players.some( function (p) {return p.room == pokeball.id;})) {
 									sendMessage({
 										to: ch,
-										message: user + ": the pokeball is already occupied."
+										message: "**" + user + "**: the pokeball is already occupied."
 									});
 									return;
 								}
@@ -521,7 +625,7 @@ function combat(att, def, ch) {
 									to: ch,
 									message: user + " captures " + value.name + " with their " + attW + "."
 								});
-								welcomeEvents.push(new RoomEvent(pokeball.ch, value.name + ": you were captured by " + user, value.id));
+								welcomeEvents.push(new RoomEvent(pokeball.ch, "**" + value.name + "**: you were captured by " + user, value.id));
 
 								changeRoom(value.room, pokeball.id, pokeball.ch, value.id);
 
@@ -553,7 +657,7 @@ function combat(att, def, ch) {
 								casinoInventory = casinoInventory.concat(value.inventory);
 								value.inventory = [];
 
-								welcomeEvents.push(new RoomEvent(dead.ch, value.name + ": you were killed by " + user, value.id));
+								welcomeEvents.push(new RoomEvent(dead.ch, "**" + value.name + "**: you were killed by " + user, value.id));
 								changeRoom(value.room, dead.id, dead.ch, value.id);
 
 								if ( (attW == "bolt-pistol" || attW == "cash-cannon") && ch != channels.get("disco")) {
@@ -577,7 +681,7 @@ function combat(att, def, ch) {
 										p.target = value.target;
 										sendMessage({
 											to: p.id,
-											message: p.name + ": your target has just died. assigning you a new target: <@" + p.target + ">",
+											message: "**" + p.name + "**: your target has just died. assigning you a new target: <@" + p.target + ">",
 											typing: true
 										});
 
@@ -599,7 +703,7 @@ function combat(att, def, ch) {
 						} else {
 							sendMessage({
 								to: ch,
-								message: user + ": target is already dead!",
+								message: "**" + user + "**: target is already dead!",
 								typing: true
 							});
 						}
@@ -607,7 +711,7 @@ function combat(att, def, ch) {
 					} else  {
 						sendMessage({
 							to: ch,
-							message: user + ": target is not in the room with you",
+							message: "**" + user + "**: target is not in the room with you",
 							typing: true
 						});
 				
@@ -625,7 +729,7 @@ function combat(att, def, ch) {
 	} else  {
 		sendMessage({
 			to: ch,
-			message: user + ": I don't know that player",
+			message: "**" + user + "**: I don't know that player",
 			typing: true
 		});
 	}
@@ -697,7 +801,7 @@ bot.on("guildMemberUpdate", function(oldM, newM) {
 
 				roomEvents.forEach(function(e) {
 					if (rooms.get(e.room) == p.room) {
-						result += p.name + ": " + e.description + "\n";
+						result += "**" + p.name + "**: " + e.description + "\n";
 					}
 				});
 
@@ -756,6 +860,11 @@ bot.on('message', function (msg) {
 			
 		args = args.splice(1);
 
+		var guild = bot.channels.get(channelID).guild;
+		var member = guild.members.get(userID);
+		if (!member.roles.has(turtlemurder.id)) {
+			member.addRole(turtlemurder.id);
+		}
 
 		var activePlayer;
 		var isPlayer = checkIfPlayer(userID);
@@ -764,43 +873,56 @@ bot.on('message', function (msg) {
 			activePlayer = players.find(function(p) {return p.id == userID;});
 		}
 		
-		if (rooms.has(channelID) || channelID == trialgrounds.ch || channelID == dead.ch || channelID == ko.ch || channelID == pokeball.ch) {
+		if (rooms.has(channelID) || channelID == trialgrounds.ch || channelID == dead.ch || channelID == ko.ch || channelID == pokeball.ch || channelID == turtlemurder.ch) {
 
 			msg.delete();
 		switch(cmd) {
 
+			case 'go':
 			case 'goto':
+			case 'move':
+			case 'moveto':
+				var now = new Date();
 				if (isPlayer) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == dead.ch || channelID == ko.ch || channelID == pokeball.ch ) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == dead.ch || channelID == ko.ch || channelID == pokeball.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **YOU'VE GOT NOWHERE TO RUN TO**",
+						message: "**" + user + "**: **YOU'VE GOT NOWHERE TO RUN TO**",
 						typing: true
 					});
 					break;
 				} else if (obj == "") {
 					sendMessage({
 						to: channelID,
-						message: user + ": please specify where you want to go to",
+						message: "**" + user + "**: please specify where you want to go to",
 						typing: true
 					});
 					break;
 
 
 
+				} else if (now.getTime() - activePlayer.cds.move < 10000) {
+					sendMessage({
+						to: channelID,
+						message: "**" + user + "**: you can only use this command once every 10 seconds",
+						typing: true
+					});
+					break;
+					
 				} else if (channels.has(obj)) {
 
 					mainRoom(user, userID, channelID, rooms.get(channels.get(obj)), obj);
+					activePlayer.cds.move = now.getTime();
 
 
 				} else if (obj == "trial" || obj == "trial-grounds") {
@@ -809,7 +931,7 @@ bot.on('message', function (msg) {
 						var goal = trialgrounds.id;
 						sendMessage({
 							to: channelID,
-							message: user + ': moving you to the trial-grounds'
+							message: "**" + user + '**: moving you to the trial-grounds'
 						});
 
 						if ( players.some(function (p) {return p.id == userID && p.hasItem("pokeball");}) ) {
@@ -850,14 +972,14 @@ bot.on('message', function (msg) {
 					} else {
 						sendMessage({
 							to: channelID,
-							message: user + ': youre not in the right channel for this command',
+							message: "**" + user + '**: youre not in the right channel for this command',
 							typing: true
 						});
 					}
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": I don't recognize that room",
+						message: "**" + user + "**: I don't recognize that room",
 						typing: true
 					});	
 				}
@@ -869,10 +991,10 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!checkIfPlayer(userID) || (!playing || !checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!checkIfPlayer(userID) || (!playing || !checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == turtlemurder.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
@@ -880,7 +1002,7 @@ bot.on('message', function (msg) {
 					if (players.some( function(p) {return (p.id == userID) && p.acted;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you've already performed an action this turn",
+							message: "**" + user + "**: you've already performed an action this turn",
 							typing: true
 						});
 						break;
@@ -907,7 +1029,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": what are you afraid of? some giant skeleton turtle wiping your party?",
+						message: "**" + user + "**: what are you afraid of? some giant skeleton turtle wiping your party?",
 						typing: true
 					});
 					break;
@@ -921,10 +1043,10 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!checkIfPlayer(userID) || (!playing || !checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!checkIfPlayer(userID) || (!playing || !checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
@@ -932,7 +1054,7 @@ bot.on('message', function (msg) {
 					if (players.some( function(p) {return (p.id == userID) && p.acted;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you've already performed an action this turn",
+							message: "**" + user + "**: you've already performed an action this turn",
 							typing: true
 						});
 						break;
@@ -1003,7 +1125,7 @@ bot.on('message', function (msg) {
 				} else if (now.getTime() - activePlayer.cds.attack < 10000) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you can only use this command once every 10 seconds",
+						message: "**" + user + "**: you can only use this command once every 10 seconds",
 						typing: true
 					});
 					break;
@@ -1022,7 +1144,7 @@ bot.on('message', function (msg) {
 					if (!players.some( function (p) { return p.id == userID && p.bleeding; }) ) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you have nothing to write with",
+							message: "**" + user + "**: you have nothing to write with",
 							typing: true
 						});
 						break;
@@ -1030,7 +1152,7 @@ bot.on('message', function (msg) {
 
 						sendMessage({
 							to: channelID,
-							message: user + ": you let out a maniacal cackle as you write the name in your own blood.",
+							message: "**" + user + "**: you let out a maniacal cackle as you write the name in your own blood.",
 							typing: true
 						});
 
@@ -1074,7 +1196,7 @@ bot.on('message', function (msg) {
 											pl.target = p.target;
 											sendMessage({
 												to: pl.id,
-												message: pl.name + ": your target has just died. assigning you a new target: <@" + pl.target + ">",
+												message: "**" + pl.name + "**: your target has just died. assigning you a new target: <@" + pl.target + ">",
 												typing: true
 											});
 
@@ -1087,12 +1209,12 @@ bot.on('message', function (msg) {
 									
 									sendMessage({
 										to: ch,
-										message: p.name + ": you grasp your chest, as your heart suddenly gives out and you die. the contents of your inventory are transferred to the casino.",
+										message: "**" + p.name + "**: you grasp your chest, as your heart suddenly gives out and you die. the contents of your inventory are transferred to the casino.",
 										typing: true
 									});
 									p.alive = false;
 									casinoInventory = casinoInventory.concat(p.inventory);
-									welcomeEvents.push(new RoomEvent(dead.ch, p.name + ": you have died from a heart attack.", p.id));
+									welcomeEvents.push(new RoomEvent(dead.ch, "**" + p.name + "**: you have died from a heart attack.", p.id));
 									changeRoom(p.room, dead.id, dead.ch, p.id);
 									name = "<@" + p.id + ">";
 								}
@@ -1117,41 +1239,41 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if( channelID == trialgrounds.id || channelID == dead.id ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you can't use items here",
+						message: "**" + user + "**: you can't use items here",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **YOUR TOYS WON'T SAVE YOU NOW**",
+						message: "**" + user + "**: **YOUR TOYS WON'T SAVE YOU NOW**",
 						typing: true
 					});
 					break;
 				} else if( !players.some( function(p) {return p.id == userID && p.inventory.includes(obj);}) ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you don't have that item",
+						message: "**" + user + "**: you don't have that item",
 						typing: true
 					});
 					break;
 				} else {
 					if (weapons.includes(obj)) {
 						switch (obj) {
-							case 'knife':
+							 case 'knife':
 								sendMessage({
 									to: channelID,
-									message: user + ": you prick yourself in the finger. Ouch! You bleed all over the floor.",
+									message: "**" + user + "**: you prick yourself in the finger. Ouch! You bleed all over the floor.",
 									typing: true
 								});
 								players.forEach( function(p) { if (p.id == userID) {
@@ -1161,7 +1283,7 @@ bot.on('message', function (msg) {
 								break;
 							case 'fluorite-octet':
 								if (channelID == channelIDs[1]) {
-									var result = user + ": You give the fluorite octet to the casino attendant.\n"
+									var result = "**" + user + "**: You give the fluorite octet to the casino attendant.\n"
 									if (casinoOpen) {
 										result += "They tell you they already got some dice to play with earlier, but they give you 5 coins as a token of appreciation anyway.";
 										players.forEach( function(p) { if (p.id == userID) {
@@ -1187,7 +1309,7 @@ bot.on('message', function (msg) {
 								} else {
 									sendMessage({
 										to: channelID,
-										message: user + ": there's nothing here to use " + obj + " on",
+										message: "**" + user + "**: there's nothing here to use " + obj + " on",
 										typing: true
 									});
 								}
@@ -1208,7 +1330,7 @@ bot.on('message', function (msg) {
 							default:
 								sendMessage({
 									to: channelID,
-									message: user + ": there's nothing here to use " + obj + " on",
+									message: "**" + user + "**: there's nothing here to use " + obj + " on",
 									typing: true
 								});
 
@@ -1216,7 +1338,7 @@ bot.on('message', function (msg) {
 						}
 
 					} else if (database.roomforobject[obj] == bot.channels.get(channelID).name) {
-						var result = user + ": " + database.use[obj] + "\n";
+						var result = "**" + user + "**: " + database.use[obj] + "\n";
 						
 						switch(obj) {
 							case 'codex-astartes':
@@ -1344,7 +1466,7 @@ bot.on('message', function (msg) {
 					} else {
 						sendMessage({
 							to: channelID,
-							message: user + ": there's nothing here to use " + obj + " on",
+							message: "**" + user + "**: there's nothing here to use " + obj + " on",
 							typing: true
 						});
 						break;
@@ -1354,26 +1476,26 @@ bot.on('message', function (msg) {
 			break;
 
 			case 'look':
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID))) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == ko.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": The Negaturtle towers over you. Will you fight or will you perish?",
+						message: "**" + user + "**: The Negaturtle towers over you. Will you fight or will you perish?",
 						typing: true
 					});
 					break;
 				}
 				var chname = bot.channels.get(channelID).name;
-				var result = user + ": " + database.descriptions[chname] + "\n";
+				var result = "**" + user + "**: " + database.descriptions[chname] + "\n";
 				roomEvents.forEach(function(e) {
 					if (e.room == channelID) {
-						result += user + ": " + e.description + "\n";
+						result += "**" + user + "**: " + e.description + "\n";
 
 					}
 				});
@@ -1389,31 +1511,31 @@ bot.on('message', function (msg) {
 					activePlayer.dancing = false;
 				}
 
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch || channelID == dead.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch || channelID == dead.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **WHAT ARE YOU LOOKING FOR? I'M RIGHT HERE**",
+						message: "**" + user + "**: **WHAT ARE YOU LOOKING FOR? I'M RIGHT HERE**",
 						typing: true
 					});
 					break;
 				} else if (obj == "") {
 					sendMessage({
 						to: channelID,
-						message: user + ": please specify which room you want to peek into",
+						message: "**" + user + "**: please specify which room you want to peek into",
 						typing: true
 					});
 					break;
 				} else if (!channels.has(obj)) {
 					sendMessage({
 						to: channelID,
-						message: user + ": that is not a valid room",
+						message: "**" + user + "**: that is not a valid room",
 						typing: true
 					});
 					break;
@@ -1421,12 +1543,13 @@ bot.on('message', function (msg) {
 				} else if ( !roomNeighbours.get(rooms.get(channelID)).includes(rooms.get(channels.get(obj))) ){
 					sendMessage({
 						to: channelID,
-						message: user + ': that room is not adjacent to yours',
+						message: "**" + user + '**: that room is not adjacent to yours',
 						typing: true
 					});
 					break;
 				} else {
-					var result = user + ": you peek into the " + obj + ". you see the following players:";
+					var alias = aliases.get(obj);
+					var result = "**" + user + "**: you peek into the " + alias + ". you see the following players:";
 					
 					players.forEach( function(p) { if (p.room == rooms.get(channels.get(obj))) {result += "\n<@" + p.id + ">"} });
 					sendMessage({
@@ -1443,17 +1566,17 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID))) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **I'M NOT BOUND BY YOUR SILLY RULES**",
+						message: "**" + user + "**: **I'M NOT BOUND BY YOUR SILLY RULES**",
 						typing: true
 					});
 					break;
@@ -1469,7 +1592,7 @@ bot.on('message', function (msg) {
 								players.forEach(function(p) {if (p.id == obj || p.name == obj) {p.votes++;}});
 								sendMessage({
 									to: channelID,
-									message: user + ": successfully recorded your vote",
+									message: "**" + user + "**: successfully recorded your vote",
 									typing: true
 								});
 								players.forEach(function(p) {if (p.id == userID) {p.voted = true;}});
@@ -1536,9 +1659,9 @@ bot.on('message', function (msg) {
 												});
 											});
 										} else {
-											result += "you have voted correctly.";
 
 											if (losers.length > 0) {
+												result += "you have voted correctly.";
 												result += " the following players will be executed:";
 
 												losers.forEach(function(l) {
@@ -1548,6 +1671,8 @@ bot.on('message', function (msg) {
 
 
 												});
+											} else {
+												result += "you have voted incorrectly. the culprit(s) avoided punishment.";
 											}
 
 
@@ -1588,7 +1713,7 @@ bot.on('message', function (msg) {
 													}
 													sendMessage({
 														to: p.id,
-														message: p.name + ": your target has just died. assigning you a new target: <@" + p.target + ">"
+														message: "**" + p.name + "**: your target has just died. assigning you a new target: <@" + p.target + ">"
 													});
 												}
 
@@ -1610,28 +1735,28 @@ bot.on('message', function (msg) {
 							} else {
 								sendMessage({
 									to: channelID,
-									message: user + ": you've already voted",
+									message: "**" + user + "**: you've already voted",
 									typing: true
 								});
 							}
 						} else {
 							sendMessage({
 								to: channelID,
-								message: user + ": I don't know that user",
+								message: "**" + user + "**: I don't know that user",
 								typing: true	
 							});
 						}
 					} else {
 						sendMessage({
 							to: channelID,
-							message: user + ": voting hasn't begun yet. please wait for everyone to arrive.",
+							message: "**" + user + "**: voting hasn't begun yet. please wait for everyone to arrive.",
 							typing: true
 						});
 					}
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": can only vote in the trial-grounds",
+						message: "**" + user + "**: can only vote in the trial-grounds",
 						typing: true
 					});
 				}				
@@ -1643,17 +1768,17 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **HAHAHA! YES, BEG FOR YOUR PATHETIC LIVES!**",
+						message: "**" + user + "**: **HAHAHA! YES, BEG FOR YOUR PATHETIC LIVES!**",
 						typing: true
 					});
 					break;
@@ -1663,7 +1788,7 @@ bot.on('message', function (msg) {
 						if (magic.black || players.some( function (p) {return p.hasItem("crystal");} )) {
 							sendMessage({
 								to: channelID,
-								message: user + ": the dead remain silent.",
+								message: "**" + user + "**: the dead remain silent.",
 								typing: true
 							});
 							break;
@@ -1674,14 +1799,14 @@ bot.on('message', function (msg) {
 									p.addItem("crystal");
 									sendMessage({
 										to: channelID,
-										message: user + ": you open your mind to the spirits of the dead and they answer. dark energies rise all around you, trying to take hold of you."
+										message: "**" + user + "**: you open your mind to the spirits of the dead and they answer. dark energies rise all around you, trying to take hold of you."
 											+ " but the hope in your heart protects you. the swirling despair crystallizes in your inventory."
 									});
 
 								} else {
 									sendMessage({
 										to: channelID,
-										message: user + ": you open your mind to the spirits of the dead and they answer. dark energies rise all around you, trying to take hold of you."
+										message: "**" + user + "**: you open your mind to the spirits of the dead and they answer. dark energies rise all around you, trying to take hold of you."
 											+ " you struggle, but soon you lose hope. your flesh blackens and cracks and you die in agony. the contents of your inventory are transferred to the casino."
 									});
 									p.alive = false;
@@ -1697,7 +1822,7 @@ bot.on('message', function (msg) {
 											pl.target = p.target;
 											sendMessage({
 												to: pl.id,
-												message: pl.name + ": your target has just died. assigning you a new target: <@" + pl.target + ">",
+												message: "**" + pl.name + "**: your target has just died. assigning you a new target: <@" + pl.target + ">",
 												typing: true
 											});
 
@@ -1715,7 +1840,7 @@ bot.on('message', function (msg) {
 					} else {
 						sendMessage({
 							to: channelID,
-							message: user + ": there is no one to answer your prayer",
+							message: "**" + user + "**: there is no one to answer your prayer",
 							typing: true
 						});
 					}
@@ -1723,7 +1848,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": your god can't save you now",
+						message: "**" + user + "**: your god can't save you now",
 						typing: true
 					});
 				}		
@@ -1735,22 +1860,22 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command"
+						message: "**" + user + "**: you're not authorized to use this command"
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **THAT FOOL HAS NO POWER OVER MY REALM**"
+						message: "**" + user + "**: **THAT FOOL HAS NO POWER OVER MY REALM**"
 					});
 					break;
 				} else if (channelID == channels.get("throne-room")) {
 					sendMessage({
 						to: channelID,
-						message: user + ": " + database.oracle
+						message: "**" + user + "**: " + database.oracle
 					});
 					break;
 
@@ -1758,7 +1883,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": there's nobody with prophetic abilities here"
+						message: "**" + user + "**: there's nobody with prophetic abilities here"
 					});
 					break;
 				}
@@ -1771,16 +1896,16 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command"
+						message: "**" + user + "**: you're not authorized to use this command"
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **THAT FOOL HAS NO POWER OVER MY REALM**"
+						message: "**" + user + "**: **THAT FOOL HAS NO POWER OVER MY REALM**"
 					});
 					break;
 				} else if (channelID == channels.get("throne-room")) {
@@ -1789,7 +1914,7 @@ bot.on('message', function (msg) {
 					if (obj == "") {
 						sendMessage({
 							to: channelID,
-							message: user + ": please specify which player you want to get an oracle about"
+							message: "**" + user + "**: please specify which player you want to get an oracle about"
 						});
 						break;
 
@@ -1798,20 +1923,20 @@ bot.on('message', function (msg) {
 					} else if (!checkIfPlayer(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": I don't recognize that player"
+							message: "**" + user + "**: I don't recognize that player"
 						});
 						break;
 					} else if (!players.some(function(p) {return p.id == userID && p.coins > 0;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't afford this service"
+							message: "**" + user + "**: you can't afford this service"
 						});
 						break;
 
 					} else if (!checkIfAlive(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't get an oracle about a dead player"
+							message: "**" + user + "**: you can't get an oracle about a dead player"
 						});
 						break;
 
@@ -1868,7 +1993,7 @@ bot.on('message', function (msg) {
 						});
 						sendMessage({
 							to: channelID,
-							message: user + ": you pay 1 coin.\n" + result
+							message: "**" + user + "**: you pay 1 coin.\n" + result
 						});
 
 						sendMessage({
@@ -1880,7 +2005,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": there's nobody with prophetic abilities here"
+						message: "**" + user + "**: there's nobody with prophetic abilities here"
 					});
 					break;
 				}
@@ -1896,13 +2021,13 @@ bot.on('message', function (msg) {
 				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command"
+						message: "**" + user + "**: you're not authorized to use this command"
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **THAT FOOL HAS NO POWER OVER MY REALM**"
+						message: "**" + user + "**: **THAT FOOL HAS NO POWER OVER MY REALM**"
 					});
 					break;
 				} else if (channelID == channels.get("throne-room")) {
@@ -1911,7 +2036,7 @@ bot.on('message', function (msg) {
 					if (obj == "") {
 						sendMessage({
 							to: channelID,
-							message: user + ": please specify which player you want to get an oracle about"
+							message: "**" + user + "**: please specify which player you want to get an oracle about"
 						});
 						break;
 
@@ -1920,20 +2045,20 @@ bot.on('message', function (msg) {
 					} else if (!checkIfPlayer(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": I don't recognize that player"
+							message: "**" + user + "**: I don't recognize that player"
 						});
 						break;
 					} else if (!players.some(function(p) {return p.id == userID && p.coins > 4;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't afford this service"
+							message: "**" + user + "**: you can't afford this service"
 						});
 						break;
 
 					} else if (!checkIfAlive(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't get an oracle about a dead player"
+							message: "**" + user + "**: you can't get an oracle about a dead player"
 						});
 						break;
 
@@ -1952,7 +2077,7 @@ bot.on('message', function (msg) {
 						});
 						sendMessage({
 							to: channelID,
-							message: user + ": you pay 5 coins.\n" + result
+							message: "**" + user + "**: you pay 5 coins.\n" + result
 						});
 
 						sendMessage({
@@ -1964,7 +2089,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": there's nobody with prophetic abilities here"
+						message: "**" + user + "**: there's nobody with prophetic abilities here"
 					});
 					break;
 				}
@@ -1977,16 +2102,16 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command"
+						message: "**" + user + "**: you're not authorized to use this command"
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **THAT FOOL HAS NO POWER OVER MY REALM**"
+						message: "**" + user + "**: **THAT FOOL HAS NO POWER OVER MY REALM**"
 					});
 					break;
 				} else if (channelID == channels.get("throne-room")) {
@@ -1995,7 +2120,7 @@ bot.on('message', function (msg) {
 					if (obj == "") {
 						sendMessage({
 							to: channelID,
-							message: user + ": please specify which player you want to get an oracle about"
+							message: "**" + user + "**: please specify which player you want to get an oracle about"
 						});
 						break;
 
@@ -2004,20 +2129,20 @@ bot.on('message', function (msg) {
 					} else if (!checkIfPlayer(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": I don't recognize that player"
+							message: "**" + user + "**: I don't recognize that player"
 						});
 						break;
 					} else if (!players.some(function(p) {return p.id == userID && p.coins > 9;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't afford this service"
+							message: "**" + user + "**: you can't afford this service"
 						});
 						break;
 
 					} else if (!checkIfAlive(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't get an oracle about a dead player"
+							message: "**" + user + "**: you can't get an oracle about a dead player"
 						});
 						break;
 
@@ -2038,7 +2163,7 @@ bot.on('message', function (msg) {
 						});
 						sendMessage({
 							to: channelID,
-							message: user + ": you pay 10 coins.\n" + result
+							message: "**" + user + "**: you pay 10 coins.\n" + result
 						});
 
 						sendMessage({
@@ -2050,7 +2175,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": there's nobody with prophetic abilities here"
+						message: "**" + user + "**: there's nobody with prophetic abilities here"
 					});
 					break;
 				}
@@ -2063,16 +2188,16 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command"
+						message: "**" + user + "**: you're not authorized to use this command"
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **THAT FOOL HAS NO POWER OVER MY REALM**"
+						message: "**" + user + "**: **THAT FOOL HAS NO POWER OVER MY REALM**"
 					});
 					break;
 				} else if (channelID == channels.get("throne-room")) {
@@ -2081,7 +2206,7 @@ bot.on('message', function (msg) {
 					if (obj == "") {
 						sendMessage({
 							to: channelID,
-							message: user + ": please specify which player you want to get an oracle about"
+							message: "**" + user + "**: please specify which player you want to get an oracle about"
 						});
 						break;
 
@@ -2090,20 +2215,20 @@ bot.on('message', function (msg) {
 					} else if (!checkIfPlayer(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": I don't recognize that player"
+							message: "**" + user + "**: I don't recognize that player"
 						});
 						break;
 					} else if (!players.some(function(p) {return p.id == userID && p.coins > 19;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't afford this service"
+							message: "**" + user + "**: you can't afford this service"
 						});
 						break;
 
 					} else if (!checkIfAlive(obj)) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can't get an oracle about a dead player"
+							message: "**" + user + "**: you can't get an oracle about a dead player"
 						});
 						break;
 
@@ -2122,7 +2247,7 @@ bot.on('message', function (msg) {
 						});
 						sendMessage({
 							to: channelID,
-							message: user + ": you pay 20 coins.\n" + result
+							message: "**" + user + "**: you pay 20 coins.\n" + result
 						});
 
 						sendMessage({
@@ -2134,7 +2259,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": there's nobody with prophetic abilities here"
+						message: "**" + user + "**: there's nobody with prophetic abilities here"
 					});
 					break;
 				}
@@ -2146,16 +2271,16 @@ bot.on('message', function (msg) {
 				if (isPlayer) {
 					activePlayer.distracting = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command"
+						message: "**" + user + "**: you're not authorized to use this command"
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **QUIT THE FANCY FOOTWORK**"
+						message: "**" + user + "**: **QUIT THE FANCY FOOTWORK**"
 					});
 					break;
 				} else if (channelID == channels.get("disco")) {
@@ -2164,7 +2289,7 @@ bot.on('message', function (msg) {
 						activePlayer.dancing = false;
 						sendMessage({
 							to: channelID,
-							message: user + ": you stop dancing."
+							message: "**" + user + "**: you stop dancing."
 						});
 						break;
 						
@@ -2180,12 +2305,12 @@ bot.on('message', function (msg) {
 								activePlayer.edge = 1;
 								sendMessage({
 									to: channelID,
-									message: activePlayer.name + ": dancing with the space marine has temporarily increased your physical prowess. you will have an edge for the next fight you're involved in."
+									message: "**" + activePlayer.name + "**: dancing with the space marine has temporarily increased your physical prowess. you will have an edge for the next fight you're involved in."
 								});
 							} else {
 								sendMessage({
 									to: channelID,
-									message: activePlayer.name + ": you already have an edge."
+									message: "**" + activePlayer.name + "**: you already have an edge."
 								});
 
 							}
@@ -2194,12 +2319,12 @@ bot.on('message', function (msg) {
 								otherDancer.edge = 1;
 								sendMessage({
 									to: channelID,
-									message: otherDancer.name + ": dancing with the space marine has temporarily increased your physical prowess. you will have an edge for the next fight you're involved in."
+									message: "**" + otherDancer.name + "**: dancing with the space marine has temporarily increased your physical prowess. you will have an edge for the next fight you're involved in."
 								});
 							} else {
 								sendMessage({
 									to: channelID,
-									message: otherDancer.name + ": you already have an edge."
+									message: "**" + otherDancer.name + "**: you already have an edge."
 								});
 
 							}
@@ -2213,7 +2338,7 @@ bot.on('message', function (msg) {
 							activePlayer.dancing = true;
 							sendMessage({
 								to: channelID,
-								message: user + ": you start busting out some moves on the dance floor. you notice the space marine tapping along with his foot, but when you look at him directly, he stops and looks away bashfully. maybe if you got some more company, he would feel comfortable joining in."
+								message: "**" + user + "**: you start busting out some moves on the dance floor. you notice the space marine tapping along with his foot, but when you look at him directly, he stops and looks away bashfully. maybe if you got some more company, he would feel comfortable joining in."
 							});
 							break;
 						}
@@ -2223,7 +2348,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": you do a little jig, but you can't really get into it without some decent music."
+						message: "**" + user + "**: you do a little jig, but you can't really get into it without some decent music."
 					});
 					break;
 
@@ -2240,17 +2365,17 @@ bot.on('message', function (msg) {
 				}
 				var now = new Date();
 				now = now.getTime();
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **YOU CAN'T ESCAPE**",
+						message: "**" + user + "**: **YOU CAN'T ESCAPE**",
 						typing: true
 					});
 					break;
@@ -2258,14 +2383,14 @@ bot.on('message', function (msg) {
 					if (players.some(function(p) {return p.id == userID && now - p.cds.mine < 20000;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you can only use this command once every 20 seconds"
+							message: "**" + user + "**: you can only use this command once every 20 seconds"
 						});
 						break;
 					}
 					if (!players.some(function(p) {return p.id != userID && p.distracting;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": as soon as you make a move for the anime piles, the otaku turns away from the TV and looks directly at you, like he *knows*. you decide it's better not to incur his wrath. it seems like you will need a distraction."
+							message: "**" + user + "**: as soon as you make a move for the anime piles, the otaku turns away from the TV and looks directly at you, like he *knows*. you decide it's better not to incur his wrath. it seems like you will need a distraction."
 						});
 						break;
 
@@ -2283,14 +2408,14 @@ bot.on('message', function (msg) {
 								});
 								sendMessage({
 									to: channelID,
-									message: user + ": you dig through the piles and find " + loot,
+									message: "**" + user + "**: you dig through the piles and find " + loot,
 									typing: true
 								});
 
 							} else {
 								sendMessage({
 									to: channelID,
-									message: user + ": you dig through the piles, but you find only worthless trash.",
+									message: "**" + user + "**: you dig through the piles, but you find only worthless trash.",
 									typing: true
 								});
 							}
@@ -2298,7 +2423,7 @@ bot.on('message', function (msg) {
 						} else {
 							sendMessage({
 								to: channelID,
-								message: user + ": you dig through the piles, but you find only worthless trash. you think this well has dried up.",
+								message: "**" + user + "**: you dig through the piles, but you find only worthless trash. you think this well has dried up.",
 								typing: true
 							});
 							break;
@@ -2308,7 +2433,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": you can't do that here.",
+						message: "**" + user + "**: you can't do that here.",
 						typing: true
 					});
 					break;
@@ -2322,17 +2447,17 @@ bot.on('message', function (msg) {
 				if (isPlayer) {
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **I DON'T FALL FOR CHEAP TRICKS LIKE THAT**",
+						message: "**" + user + "**: **I DON'T FALL FOR CHEAP TRICKS LIKE THAT**",
 						typing: true
 					});
 					break;
@@ -2342,27 +2467,27 @@ bot.on('message', function (msg) {
 						activePlayer.distracting = false;
 						sendMessage({
 							to: channelID,
-							message: user + ": you make up some excuse for why you have to go and leave the otaku to his animes."
+							message: "**" + user + "**: you make up some excuse for why you have to go and leave the otaku to his animes."
 						});
 						break;
 					} else if (players.some(function(p) {return p.id != userID && p.distracting;})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": someone else is already hogging the otaku's attention"
+							message: "**" + user + "**: someone else is already hogging the otaku's attention"
 						});
 						break;
 					} else {
 						activePlayer.distracting = true;
 						sendMessage({
 							to: channelID,
-							message: user + ": you pretend to be interested in anime to get the otaku's attention. he pauses his TV and starts bombarding you with information about all of his favorite animes and waifus. it's the most mind-numbing stuff you've ever had to listen to. you immediately regret this decision."
+							message: "**" + user + "**: you pretend to be interested in anime to get the otaku's attention. he pauses his TV and starts bombarding you with information about all of his favorite animes and waifus. it's the most mind-numbing stuff you've ever had to listen to. you immediately regret this decision."
 						});
 						break;
 					}
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": you act in a very distracting manner, but nobody cares.",
+						message: "**" + user + "**: you act in a very distracting manner, but nobody cares.",
 						typing: true
 					});
 					break;
@@ -2376,17 +2501,17 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **I DON'T PLAY GAMES**",
+						message: "**" + user + "**: **I DON'T PLAY GAMES**",
 						typing: true
 					});
 					break;
@@ -2394,7 +2519,7 @@ bot.on('message', function (msg) {
 					if (!casinoOpen) {
 						sendMessage({
 							to: channelID,
-							message: user + ": the casino attendant regrets to inform you that they don't have any dice to play with. you can still buy and sell prizes for coins, though.",
+							message: "**" + user + "**: the casino attendant regrets to inform you that they don't have any dice to play with. you can still buy and sell prizes for coins, though.",
 							typing: true
 						});
 						break;
@@ -2456,7 +2581,7 @@ bot.on('message', function (msg) {
 						if (dicetype == null) {
 							sendMessage({
 								to: channelID,
-								message: user + ": that's not a valid game to play at this time.",
+								message: "**" + user + "**: that's not a valid game to play at this time.",
 								typing: true
 							});
 							break;
@@ -2465,7 +2590,7 @@ bot.on('message', function (msg) {
 						if (activePlayer.coins < price) {
 							sendMessage({
 								to: channelID,
-								message: user + ": you don't have enough coins to buy into this game.",
+								message: "**" + user + "**: you don't have enough coins to buy into this game.",
 								typing: true
 							});
 							break;
@@ -2481,9 +2606,9 @@ bot.on('message', function (msg) {
 								var dice = rollxdy(2,dicetype);
 								var result;
 								if (price == 1) {
-									result = user + ": You pay " + price + " coin to play. You roll 2d" + dicetype + ". If you get doubles, you win the number you got doubles of squared coins.\n" + dice + "\n";
+									result = "**" + user + "**: You pay " + price + " coin to play. You roll 2d" + dicetype + ". If you get doubles, you win the number you got doubles of squared coins.\n" + dice + "\n";
 								} else {
-									result = user + ": You pay " + price + " coins to play. You roll 2d" + dicetype + ". If you get doubles, you win the number you got doubles of squared coins.\n" + dice + "\n";
+									result = "**" + user + "**: You pay " + price + " coins to play. You roll 2d" + dicetype + ". If you get doubles, you win the number you got doubles of squared coins.\n" + dice + "\n";
 								}
 								if (dice[0] == dice[1]) {
 									var prize = dice[0] * dice[0];
@@ -2505,7 +2630,7 @@ bot.on('message', function (msg) {
 
 
 				} else if (channelID == channels.get("arcade")) {
-					var result = user + ": ";
+					var result = "**" + user + "**: ";
 					players.forEach( function(p) {
 						if (p.id == userID) {
 							if (p.coins > 0) {
@@ -2531,7 +2656,7 @@ bot.on('message', function (msg) {
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": there aren't any games to play here.",
+						message: "**" + user + "**: there aren't any games to play here.",
 						typing: true
 					});
 					break;
@@ -2545,29 +2670,29 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **YOUR ONLY PRIZE WILL BE A SWIFT DEMISE, IF YOU SUBMIT NOW**",
+						message: "**" + user + "**: **YOUR ONLY PRIZE WILL BE A SWIFT DEMISE, IF YOU SUBMIT NOW**",
 						typing: true
 					});
 					break;
 				} else if (channelID != channels.get("casino")) {
 					sendMessage({
 						to: channelID,
-						message: user + ": there are no prizes here.",
+						message: "**" + user + "**: there are no prizes here.",
 						typing: true
 					});
 					break;
 				} else {
-					var result = user + ": the casino offers the following prizes:"
+					var result = "**" + user + "**: the casino offers the following prizes:"
 
 					casinoInventory.forEach( function (i) {
 						result += "\n" + i + ": " + database.casinoprices[i] + " coins";
@@ -2588,38 +2713,38 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **I HAVE NO USE FOR THOSE RIDICULOUS TOKENS OF YOURS**",
+						message: "**" + user + "**: **I HAVE NO USE FOR THOSE RIDICULOUS TOKENS OF YOURS**",
 						typing: true
 					});
 					break;
 				} else if (channelID != channels.get("casino")) {
 					sendMessage({
 						to: channelID,
-						message: user + ": there's nothing to buy here",
+						message: "**" + user + "**: there's nothing to buy here",
 						typing: true
 					});
 					break;
 				} else if (obj == "") {
 					sendMessage({
 						to: channelID,
-						message: user + ": please specify what you want to buy. (!prizes to see what items are on offer)",
+						message: "**" + user + "**: please specify what you want to buy. (!prizes to see what items are on offer)",
 						typing: true
 					});
 					break;					
 				} else if (!casinoInventory.includes(obj)) {
 					sendMessage({
 						to: channelID,
-						message: user + ": they don't have that item. (!prizes to see what items are on offer)",
+						message: "**" + user + "**: they don't have that item. (!prizes to see what items are on offer)",
 						typing: true
 					});
 					break;					
@@ -2629,12 +2754,12 @@ bot.on('message', function (msg) {
 						if (p.id == userID) {
 							var price = database.casinoprices[obj];
 							if (p.coins < price) {
-								result = user + ": you can't afford this item";
+								result = "**" + user + "**: you can't afford this item";
 							} else {
 								p.coins -= price;
 								casinoInventory = casinoInventory.filter( function (i) { return i != obj; });
 								p.addItem(obj);
-								result = user + ": you successfully purchase the " + obj;
+								result = "**" + user + "**: you successfully purchase the " + obj;
 							}
 
 						}
@@ -2654,31 +2779,31 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **I DON'T MAKE DEALS WITH VERMIN**",
+						message: "**" + user + "**: **I DON'T MAKE DEALS WITH VERMIN**",
 						typing: true
 					});
 					break;
 				} else if (channelID != channels.get("casino")) {
 					sendMessage({
 						to: channelID,
-						message: user + ": nobody here will buy this",
+						message: "**" + user + "**: nobody here will buy this",
 						typing: true
 					});
 					break;
 				} else if (obj == "") {
 					sendMessage({
 						to: channelID,
-						message: user + ": please specify what you want to sell. (!inventory to see what items you have)",
+						message: "**" + user + "**: please specify what you want to sell. (!inventory to see what items you have)",
 						typing: true
 					});
 					break;									
@@ -2688,13 +2813,13 @@ bot.on('message', function (msg) {
 						if (p.id == userID) {
 							var price = database.casinoprices[obj] / 2;
 							if (!p.hasItem(obj)) {
-								result = user + ": you don't own that item (!inventory to see what items you have)";
+								result = "**" + user + "**: you don't own that item (!inventory to see what items you have)";
 							} else {
 								p.coins += price;
 								casinoInventory.push(obj);
 								p.removeItem(obj);
 								if(p.weapon == obj) {p.weapon = "fists";}
-								result = user + ": you successfully sell the " + obj + " for " + price + " coins.";
+								result = "**" + user + "**: you successfully sell the " + obj + " for " + price + " coins.";
 							}
 
 						}
@@ -2716,10 +2841,10 @@ bot.on('message', function (msg) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch || channelID == trialgrounds.ch || channelID == pokeball.ch || channelID == ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
@@ -2729,7 +2854,7 @@ bot.on('message', function (msg) {
 					if(!players.some(function (p) {return (p.id == userID) && (p.hasItem(obj) || obj == "fists");})) {
 						sendMessage({
 							to: channelID,
-							message: user + ": you don't have that item",
+							message: "**" + user + "**: you don't have that item",
 							typing: true
 						});
 						break;
@@ -2742,35 +2867,36 @@ bot.on('message', function (msg) {
 					});
 					sendMessage({
 						to: channelID,
-						message: user + ": equipped the " + obj,
+						message: "**" + user + "**: equipped the " + obj,
 						typing: true
 					});
 				} else {
 					sendMessage({
 						to: channelID,
-						message: user + ": you can't equip that",
+						message: "**" + user + "**: you can't equip that",
 						typing: true
 					});
 				}
 
 			break;
-
+			
+			case 'wake':
 			case 'wakeup':
 				if (isPlayer) {
 					activePlayer.distracting = false;
 					activePlayer.dancing = false;
 				}
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID))) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **THERE'S NO WAKING UP FROM THIS NIGHTMARE**",
+						message: "**" + user + "**: **THERE'S NO WAKING UP FROM THIS NIGHTMARE**",
 						typing: true
 					});
 					break;
@@ -2779,7 +2905,7 @@ bot.on('message', function (msg) {
 				if (channelID != ko.ch) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're already awake",
+						message: "**" + user + "**: you're already awake",
 						typing: true
 					});
 					break;
@@ -2801,12 +2927,12 @@ bot.on('message', function (msg) {
 							if (time > 120000) {
 								knockouts = knockouts.filter( function (k) {return k.victim != p.id;} );
 								roomEvents = roomEvents.filter( function (e) {return e.id != p.id;} );
-								welcomeEvents.push(new RoomEvent(dest, user + ": you regain your senses", userID));
+								welcomeEvents.push(new RoomEvent(dest, "**" + user + "**: you regain your senses", userID));
 								changeRoom(p.room, rooms.get(dest), dest, p.id);
 							} else  {
 								sendMessage({
 									to: ko.ch,
-									message: user + ": you can't wake up yet",
+									message: "**" + user + "**: you can't wake up yet",
 									typing: true
 								});
 							}
@@ -2822,21 +2948,21 @@ bot.on('message', function (msg) {
 					if (bossFight) {
 						sendMessage({
 							to: channelID,
-							message: user + ": **YOU'RE ALREADY SUFFERING**",
+							message: "**" + user + "**: **YOU'RE ALREADY SUFFERING**",
 							typing: true
 						});
 						break;
 					} else {
 						sendMessage({
 							to: channelID,
-							message: user + ": you're already playing!",
+							message: "**" + user + "**: you're already playing!",
 							typing: true
 						});
 					}
 				} else if (playing) {
 					sendMessage({
 						to: channelID,
-						message: user + ": game already in progress. you'll have to wait for the next round.",
+						message: "**" + user + "**: game already in progress. you'll have to wait for the next round.",
 						typing: true
 					});
 				} else {
@@ -2870,7 +2996,7 @@ bot.on('message', function (msg) {
 				if(!checkIfPlayer(userID)) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
@@ -2878,7 +3004,7 @@ bot.on('message', function (msg) {
 				if(playing) {
 					sendMessage({
 						to: channelID,
-						message: user + ": game already in progress.",
+						message: "**" + user + "**: game already in progress.",
 						typing: true
 					});
 				} else {
@@ -2887,8 +3013,18 @@ bot.on('message', function (msg) {
 						message: "initializing game",
 						typing: true
 					});
+
+					players.forEach(function(p) {
+						var guild = bot.channels.get(channelID).guild;
+						var member = guild.members.get(p.id);
+						member.addRole(p.room);
+					});
+
+
 					var targets = [];
 					players.forEach(function(value,index) {targets[index] = players[index];});
+
+					
 
 					var i;
 					for(i = 0; i < 1000; i++) {
@@ -2955,17 +3091,17 @@ bot.on('message', function (msg) {
 				break;
 
 			case 'target':
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID))) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **YOUR PETTY SQUABBLES DON'T MATTER ANYMORE**",
+						message: "**" + user + "**: **YOUR PETTY SQUABBLES DON'T MATTER ANYMORE**",
 						typing: true
 					});
 					break;
@@ -2980,10 +3116,10 @@ bot.on('message', function (msg) {
 				break;
 
 			case 'inventory':
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID))) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
@@ -3004,23 +3140,23 @@ bot.on('message', function (msg) {
 				break;
 
 			case 'weapon':
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID))) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if( channelID == trialgrounds.id) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you can't check your weapon here",
+						message: "**" + user + "**: you can't check your weapon here",
 						typing: true
 					});
 					break;
 				}
 
-				var result = user + ": you have the following weapon equipped:";
+				var result = "**" + user + "**: you have the following weapon equipped:";
 				players.forEach( function(p) {
 					
 					if (p.id == userID) {
@@ -3034,24 +3170,25 @@ bot.on('message', function (msg) {
 				});
 				break;
 
+			case 'coin':
 			case 'coins':
-				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID))) {
+				if(!(checkIfPlayer(userID) && playing && checkIfAlive(userID)) || channelID == turtlemurder.ch ) {
 					sendMessage({
 						to: channelID,
-						message: user + ": you're not authorized to use this command",
+						message: "**" + user + "**: you're not authorized to use this command",
 						typing: true
 					});
 					break;
 				} else if (bossFight) {
 					sendMessage({
 						to: channelID,
-						message: user + ": **YOUR RICHES ARE WORTHLESS NOW**",
+						message: "**" + user + "**: **YOUR RICHES ARE WORTHLESS NOW**",
 						typing: true
 					});
 					break;
 				}
 
-				var result = user + ": you have ";
+				var result = "**" + user + "**: you have ";
 				players.forEach( function(p) {
 					
 					if (p.id == userID) {
@@ -3066,7 +3203,7 @@ bot.on('message', function (msg) {
 				break;
 
 			case 'endgame':
-				putEveryoneInRoom(channelIDs[4]);
+				removeFromTurtleMurder();
 				startingItems = ['codex-astartes', 'nendoroid', 'sburb-beta', 'key', 'pearl'];
 				casinoInventory = ['money-machete', 'cash-cannon', 'dollar-bill'];
 				animePile = [];
@@ -3089,7 +3226,7 @@ bot.on('message', function (msg) {
 				losers = [];
 
 				sendMessage({
-					to: channels.get("lobby"),
+					to: turtlemurder.ch,
 					message: "game ended by " + user + "."
 				});
 				break;
@@ -3129,7 +3266,7 @@ bot.on('message', function (msg) {
 			default :
 				sendMessage({
 					to: channelID,
-					message: user + ": I don't recognize that command",
+					message: "**" + user + "**: I don't recognize that command",
 					typing: true
 				});
 
@@ -3137,7 +3274,7 @@ bot.on('message', function (msg) {
 		} else {
 			sendMessage({
 				to: channelID,
-				message: user + ": can't issue commands in this channel",
+				message: "**" + user + "**: can't issue commands in this channel",
 				typing: true
 			});
 		}
@@ -3162,7 +3299,7 @@ bot.on('message', function (msg) {
 							arenaRewardsGiven = true;
 							sendMessage({
 								to: channelID,
-								message: p.name + ": as a reward for your victory in this hard-fought battle you receive the pokeball and the badge."
+								message: "**" + p.name + "**: as a reward for your victory in this hard-fought battle you receive the pokeball and the badge."
 							});
 						}
 					});
