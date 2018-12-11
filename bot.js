@@ -929,9 +929,13 @@ bot.on('message', function (msg) {
 					if(rooms.has(channelID)) {
 						var currentRoom = rooms.get(channelID);
 						var goal = trialgrounds.id;
-						sendMessage({
-							to: channelID,
-							message: "**" + user + '**: moving you to the trial-grounds'
+                                                channelIDs.forEach(function (ch) {
+							if (ch != channelIDs[2]) {
+								sendMessage({
+									to: ch,
+									message: "**" + user + ' is moving to the trial-grounds**'
+								});
+							}
 						});
 
 						if ( players.some(function (p) {return p.id == userID && p.hasItem("pokeball");}) ) {
@@ -3235,9 +3239,9 @@ bot.on('message', function (msg) {
 				sendMessage({
 					to: userID,
 					message:"Welcome to Happy Turtle Murder Extravaganza. In this game you play an assassin, who has to kill their target without anyone noticing. But watch out, someone else has you as their target, too. After a murder has occurred, everyone gets to vote on who they think did it. If the culprit receives more votes than any other player, they are executed. Otherwise the killer wins and everyone else loses. The game continues, as long as there are at least 4 players left alive, or until a player wins.\n" +
-						"Note about weapons: Weapons are single use. You can only kill one person with each weapon. Most weapons will also be automatically left behind at the crime scene for everyone to see.\n" +
-						"Note about targets: If you kill someone other than your target, the player who had that target will immediately be notified to receive their substitute target, so avoid unnecessary bloodshed.\n" + 
-						"Note about the trial-grounds: The trial-grounds are where you can cast your votes on who you think the culprit was for each case. The trial-grounds are a strict no-combat zone. You are completely safe there. The voting only starts once everyone has entered the trial-grounds. You can go there at any time and from anywhere. However, it's a one-way trip. Once you enter the trial-grounds, you won't be able to leave, until a verdict has been reached.\n" 
+						"__Note about weapons:__ Weapons are single use. You can only kill one person with each weapon. Most weapons will also be automatically left behind at the crime scene for everyone to see.\n" +
+						"__Note about targets:__ If you kill someone other than your target, the player who had that target will immediately be notified to receive their substitute target, so avoid unnecessary bloodshed.\n" + 
+						"__Note about the trial-grounds:__ The trial-grounds are where you can cast your votes on who you think the culprit was for each case. The trial-grounds are a strict no-combat zone. You are completely safe there. The voting only starts once everyone has entered the trial-grounds. You can go there at any time and from anywhere. However, it's a one-way trip. Once you enter the trial-grounds, you won't be able to leave, until a verdict has been reached.\n" 
 				});
 
 				sendMessage({
