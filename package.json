@@ -1,7 +1,7 @@
 {
   "name": "game-bot",
-  "version": "1.0.1",
-  "description": "my bot for testing shit",
+  "version": "1.0.2",
+  "description": "Happy Turtle Murder Extravaganza",
   "main": "bot.js",
   "author": "magicksRampage",
   "dependencies": {
