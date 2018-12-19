@@ -778,11 +778,55 @@ function checkIfAlive(userID) {
 	}
 }
 
+function reset() {
+	removeFromTurtleMurder();
+	startingItems = ['codex-astartes', 'nendoroid', 'sburb-beta', 'key', 'pearl'];
+	casinoInventory = ['money-machete', 'cash-cannon', 'dollar-bill'];
+	animePile = [];
+	for (color in magic) {color = false;};
+
+	murders = [];
+	knockouts = [];
+	roomEvents = [];
+	welcomeEvents = [];
+	players = [];
+	casinoDice = [];
+	playing = false;
+	voting = false;
+	casinoOpen = false;
+	arenaRewardsGiven = false;
+	bossFight = false;
+	boss = new Boss();
+
+	winners = [];
+	losers = [];
+
+}
+
 //events
 bot.on('ready', function (evt) {
 	logger.info('Connected');
 	logger.info('Logged in as: ');
 	logger.info(bot.user.username + ' – (' + bot.user.id + ')');
+});
+
+bot.on("guildMemberRemove", function(member) {
+	if (checkIfPlayer(member.id)) {
+		var pid = players.findIndex(function(p) {
+			return p.id == member.id
+		});
+		players.splice(pid, 1);
+		if (playing) {
+			reset();
+			sendMessage({
+				to: turtlemurder.ch,
+				message: "game ended by " + member.displayName + " leaving the server."
+			});
+
+		}
+		
+	}
+
 });
 
 bot.on("guildMemberUpdate", function(oldM, newM) {
@@ -850,7 +894,7 @@ bot.on('message', function (msg) {
 	}
 		
 
-	if (message.substring(0, 1) == '!') {
+	if (message.substring(0, 1) == '!' && msg.member != null) {
 		var args = message.substring(1).split(' ');
 		var cmd = args[0].toLowerCase();
 		var obj = "";
@@ -3207,27 +3251,7 @@ bot.on('message', function (msg) {
 				break;
 
 			case 'endgame':
-				removeFromTurtleMurder();
-				startingItems = ['codex-astartes', 'nendoroid', 'sburb-beta', 'key', 'pearl'];
-				casinoInventory = ['money-machete', 'cash-cannon', 'dollar-bill'];
-				animePile = [];
-				for (color in magic) {color = false;};
-
-				murders = [];
-				knockouts = [];
-				roomEvents = [];
-				welcomeEvents = [];
-				players = [];
-				casinoDice = [];
-				playing = false;
-				voting = false;
-				casinoOpen = false;
-				arenaRewardsGiven = false;
-				bossFight = false;
-				boss = new Boss();
-
-				winners = [];
-				losers = [];
+				reset();
 
 				sendMessage({
 					to: turtlemurder.ch,
