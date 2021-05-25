@@ -187,7 +187,7 @@ powerLevels.set('bolt-pistol', 3);
 powerLevels.set('pokeball', 3);
 powerLevels.set('tranquilizer-gun', 3);
 
-var startingItems = ['codex-astartes', 'nendoroid', 'sburb-beta', 'key', 'pearl'];
+var startingItems = ['codex-astartes', 'nendoroid', 'sburb-beta', 'key', 'pearl', 'badge'];
 var casinoInventory = ['money-machete', 'cash-cannon', 'dollar-bill'];
 var animeMerch = ['anime-pin', 'anime-poster', 'anime-tshirt', 'anime-pillow', 'anime-bluray', 'anime-figure'];
 var animePile = [];
@@ -780,7 +780,7 @@ function checkIfAlive(userID) {
 
 function reset() {
 	removeFromTurtleMurder();
-	startingItems = ['codex-astartes', 'nendoroid', 'sburb-beta', 'key', 'pearl'];
+	startingItems = ['codex-astartes', 'nendoroid', 'sburb-beta', 'key', 'pearl', 'badge'];
 	casinoInventory = ['money-machete', 'cash-cannon', 'dollar-bill'];
 	animePile = [];
 	for (color in magic) {color = false;};
